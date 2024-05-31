@@ -1,4 +1,6 @@
-@import url('material-icons/iconfont/material-icons.css');
+@import url("material-icons/iconfont/material-icons.css");
+
+@import "./css/editor.css";
 
 @tailwind base;
 @tailwind components;

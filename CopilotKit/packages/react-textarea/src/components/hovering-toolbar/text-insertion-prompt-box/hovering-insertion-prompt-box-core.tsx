@@ -6,7 +6,6 @@ import {
 } from "../../../types/base/autosuggestions-bare-function";
 import { SourceSearchBox } from "../../source-search-box/source-search-box";
 import { DocumentPointer } from "@copilotkit/react-core";
-import { Button } from "../../ui/button";
 import { Label } from "../../ui/label";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 
@@ -230,14 +229,14 @@ export const HoveringInsertionPromptBoxCore = ({
 
   const SubmitComponent = (
     <div className="flex w-full gap-4 justify-start">
-      <Button
-        className=" bg-green-700 text-white"
+      <button
+        className="copilotKitInsertButton"
         onClick={() => {
           performInsertion(editSuggestion);
         }}
       >
         Insert <i className="material-icons">check</i>
-      </Button>
+      </button>
     </div>
   );
 
