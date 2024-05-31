@@ -1,3 +1,4 @@
+// TODO remove tailwind
 import useAutosizeTextArea from "../../../hooks/misc/use-autosize-textarea";
 import {
   EditingEditorState,

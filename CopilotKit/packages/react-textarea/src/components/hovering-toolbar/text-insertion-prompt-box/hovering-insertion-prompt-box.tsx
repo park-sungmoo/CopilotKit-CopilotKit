@@ -1,3 +1,4 @@
+// TODO remove tailwind
 import { HoveringInsertionPromptBoxCore } from "./hovering-insertion-prompt-box-core";
 import {
   EditingEditorState,

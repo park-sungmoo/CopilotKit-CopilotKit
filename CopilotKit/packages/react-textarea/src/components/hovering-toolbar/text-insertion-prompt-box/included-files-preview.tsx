@@ -1,3 +1,4 @@
+// TODO remove tailwind
 import { DocumentPointer } from "@copilotkit/react-core";
 import { Label } from "../../ui/label";
 import React from "react";

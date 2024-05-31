@@ -1,3 +1,4 @@
+// TODO remove tailwind
 import { useEffect, useRef, useState } from "react";
 import { Editor, Location, Transforms } from "slate";
 import { useSlate, useSlateSelection } from "slate-react";

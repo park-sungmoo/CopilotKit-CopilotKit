@@ -1,3 +1,4 @@
+// TODO remove tailwind
 export interface ChipWithIconProps {
   label: string;
   onDelete: () => void;
