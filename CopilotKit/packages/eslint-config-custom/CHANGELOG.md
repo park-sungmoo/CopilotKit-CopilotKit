@@ -1,5 +1,12 @@
 # eslint-config-custom
 
+## 0.12.0
+
+### Minor Changes
+
+- f771353: Fix: Stale CopilotReadable
+- 9df8d43: Remove unneeded tailwind components
+
 ## 0.12.0-mme-fix-textarea-css.1
 
 ### Minor Changes

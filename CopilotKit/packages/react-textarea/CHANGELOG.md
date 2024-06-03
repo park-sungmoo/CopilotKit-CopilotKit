@@ -1,5 +1,19 @@
 # ui
 
+## 0.37.0
+
+### Minor Changes
+
+- f771353: Fix: Stale CopilotReadable
+- 9df8d43: Remove unneeded tailwind components
+
+### Patch Changes
+
+- Updated dependencies [f771353]
+- Updated dependencies [9df8d43]
+  - @copilotkit/react-core@0.37.0
+  - @copilotkit/shared@0.37.0
+
 ## 0.37.0-mme-fix-textarea-css.1
 
 ### Minor Changes
