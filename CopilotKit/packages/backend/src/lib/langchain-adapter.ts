@@ -20,6 +20,29 @@
  * - a LangChain stream `IterableReadableStream`
  * - a LangChain `BaseMessageChunk` object
  * - a LangChain `AIMessage` object
+ *
+ * ## Example: Anthropic backend
+ *
+ * ```typescript
+ * const copilotKit = new CopilotRuntime();
+ *
+ * return copilotKit.response(
+ *   req,
+ *   new LangChainAdapter(async (forwardedProps) => {
+ *     const model = new ChatAnthropic({
+ *       temperature: 0.9,
+ *       model: "claude-3-sonnet-20240229",
+ *       // Defaults to process.env.ANTHROPIC_API_KEY,
+ *       // apiKey: "YOUR-API-KEY",
+ *       maxTokens: 1024,
+ *   });
+ *
+ *   return model.stream(forwardedProps.messages, {
+ *       tools: LangChainAdapter.convertToolsToJsonSchema(forwardedProps.tools),
+ *     });
+ *   }),
+ * );
+ * ```
  */
 
 import { ChatCompletionChunk } from "@copilotkit/shared";
@@ -46,6 +69,20 @@ export class LangChainAdapter implements CopilotKitServiceAdapter {
    * To use LangChain as a backend, provide a handler function to the adapter with your custom LangChain logic.
    */
   constructor(private chainFn: (forwardedProps: any) => Promise<LangChainReturnType>) {}
+
+  public static convertToolsToJsonSchema(tools: any) {
+    return tools.map((tool: any) => ({
+      name: tool.function.name,
+      description: tool.function.description,
+      input_schema: {
+        type: "object",
+        properties: tool.function.parameters.properties,
+        required: tool.function.parameters.required,
+        additionalProperties: false,
+        $schema: "http://json-schema.org/draft-07/schema#",
+      },
+    }));
+  }
 
   async getResponse(forwardedProps: any): Promise<CopilotKitResponse> {
     forwardedProps = this.transformProps(forwardedProps);
@@ -181,8 +218,35 @@ export class LangChainAdapter implements CopilotKitServiceAdapter {
               return;
             }
 
-            const toolCalls = value.lc_kwargs?.additional_kwargs?.tool_calls;
-            const content = value?.lc_kwargs?.content;
+            // console.log(JSON.stringify(value, null, 2));
+
+            let toolCalls = value.lc_kwargs?.additional_kwargs?.tool_calls;
+
+            if (!toolCalls && value.lc_kwargs?.tool_calls) {
+              toolCalls = value.lc_kwargs.tool_calls.map((toolCall: any) => ({
+                index: 0,
+                function: {
+                  ...(toolCall.name ? { name: toolCall.name } : {}),
+
+                  arguments:
+                    typeof toolCall.args === "string"
+                      ? toolCall.args
+                      : JSON.stringify(toolCall.args),
+                },
+                id: toolCall.id,
+              }));
+            }
+
+            let content = value?.lc_kwargs?.content;
+            if (
+              content &&
+              typeof content !== "string" &&
+              value?.lc_kwargs?.content &&
+              value?.lc_kwargs?.content.length > 0 &&
+              value?.lc_kwargs?.content[0].type === "text"
+            ) {
+              content = value.lc_kwargs.content[0].text;
+            }
             const chunk: ChatCompletionChunk = {
               choices: [
                 {
