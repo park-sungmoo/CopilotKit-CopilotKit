@@ -11,6 +11,12 @@ export enum ActionExecutionScope {
   client = "client",
 }
 
+export enum MessageInputUnionType {
+  textMessage = "textMessage",
+  actionExecutionMessage = "actionExecutionMessage",
+  resultMessage = "resultMessage",
+}
+
 registerEnumType(MessageRole, {
   name: "MessageRole",
   description: "The role of the message",
@@ -19,4 +25,9 @@ registerEnumType(MessageRole, {
 registerEnumType(ActionExecutionScope, {
   name: "ActionExecutionScope",
   description: "The scope of the action",
+});
+
+registerEnumType(MessageInputUnionType, {
+  name: "MessageInputUnionType",
+  description: "The type of the message",
 });
